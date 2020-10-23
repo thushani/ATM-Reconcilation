@@ -1,0 +1,752 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="CreateFolderStructure"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="LogFileName" Type="InOutArgument(x:String)" />
+    <x:Property Name="in_Config" Type="InOutArgument(scg:Dictionary(x:String, x:Object))" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>CreateFolderStructure_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="CreateFolderStructure" sap2010:WorkflowViewState.IdRef="Sequence_30">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="sd:DataTable" Name="Dt_ProcessTable" />
+      <Variable x:TypeArguments="x:Boolean" Name="InputFolderExists" />
+      <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Input_Folder_Path&quot;).ToString.Trim]" Name="InputFolder" />
+      <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Output_Folder_Path&quot;).ToString.Trim]" Name="OutputFolder" />
+      <Variable x:TypeArguments="x:Boolean" Name="OutputFolderExists" />
+      <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Logs_Folder_Path&quot;).ToString.Trim]" Name="LogsFolder" />
+      <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Processing_Folder_Path&quot;).ToString.Trim]" Name="ProcessingFolder" />
+      <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Traker_Folder_Path&quot;).ToString.Trim]" Name="TrackerFolder" />
+      <Variable x:TypeArguments="x:Boolean" Name="LogsFolderExists" />
+      <Variable x:TypeArguments="x:Boolean" Name="ProcessingFolderExists" />
+      <Variable x:TypeArguments="x:Boolean" Name="TrackerFolderExists" />
+      <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Failure_Folder_Path&quot;).ToString.Trim]" Name="FailureFolder" />
+      <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Success_Folder_Path&quot;).ToString.Trim]" Name="SuccessFolder" />
+      <Variable x:TypeArguments="x:Boolean" Name="FailureFolderExists" />
+      <Variable x:TypeArguments="x:Boolean" Name="SuccessFolderExists" />
+      <Variable x:TypeArguments="x:Boolean" Name="FinalSuccessFolderExists" />
+      <Variable x:TypeArguments="x:Boolean" Name="BI_Portal_RawData_FilePathFolderExists" />
+    </Sequence.Variables>
+    <ui:Comment DisplayName="eZ Cash Merchant Reconsilation Process" sap2010:WorkflowViewState.IdRef="Comment_1" Text="Create folder struture&#xA;&#xA;&#xA;&#xA;CODE is Implemented By:&#xA;THUSHANI KALAMULLAGE&#xA;&#xA;&#xA;" />
+    <TryCatch DisplayName="Project Folders" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Try>
+        <Sequence DisplayName="Project Folders creation" sap2010:WorkflowViewState.IdRef="Sequence_28">
+          <Sequence DisplayName="Input folder creation" sap2010:WorkflowViewState.IdRef="Sequence_38">
+            <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_15" Text="Main: Int: Project folders: Checking Input folder is available or not." />
+            <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_16" Level="Info" Message="[&quot;Main: Int: Project folders: Checking Input folder is available or not.&quot;]" />
+            <ui:PathExists DisplayName="Path Exists" Exists="[InputFolderExists]" sap2010:WorkflowViewState.IdRef="PathExists_8" Path="[InputFolder]" PathType="Folder" />
+            <If Condition="[InputFolderExists]" DisplayName="Checking Input folder exiting or not" sap2010:WorkflowViewState.IdRef="If_8">
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_36">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="s:String[]" Name="VAStr_InputFiles" />
+                  </Sequence.Variables>
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_16" Text="[&quot;Main: Int: Project folders: Input folder already existed.@ &quot;+InputFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_17" Level="Info" Message="[&quot;Main: Int: Project folders: Input folder already existed.@ &quot;+InputFolder]" />
+                  <ui:InvokeCode ContinueOnError="{x:Null}" Code="Array.ForEach(directory.GetFiles(path),Sub(x) file.Delete(x))" DisplayName="Invoke Code" sap2010:WorkflowViewState.IdRef="InvokeCode_7">
+                    <ui:InvokeCode.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="path">[InputFolder]</InArgument>
+                    </ui:InvokeCode.Arguments>
+                  </ui:InvokeCode>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_37">
+                  <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_8" Path="[InputFolder]" />
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_19" Text="[&quot;Main: Int: Project folders: Input folder Created.@ &quot;+InputFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_20" Level="Info" Message="[&quot;Main: Int: Project folders: Input folder Created.@ &quot;+InputFolder]" />
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+          <Sequence DisplayName="Success folder creation" sap2010:WorkflowViewState.IdRef="Sequence_6">
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Object">[In_Config("Success_Folder_Path")]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Object">[In_Config("Success_Folder_Path").ToString.Trim+"\"+now.ToString("ddMMMyyyy_HHmm")]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[SuccessFolder]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[In_Config("Success_Folder_Path").ToString.Trim]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_3" Text="Main: Int: CreateFolderStructure: Project folders: Checking Success Folder is available or not." />
+            <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Checking Success Folder is available or not.&quot;]" />
+            <ui:PathExists DisplayName="Path Exists" Exists="[SuccessFolderExists]" sap2010:WorkflowViewState.IdRef="PathExists_2" Path="[SuccessFolder]" PathType="Folder" />
+            <If Condition="[SuccessFolderExists]" DisplayName="Checking Success folder exiting or Not" sap2010:WorkflowViewState.IdRef="If_2">
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_4" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Success folder path exists @ &quot;+SuccessFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Success folder path exists @ &quot;+SuccessFolder]" />
+                  <ui:InvokeCode ContinueOnError="{x:Null}" Code="Array.ForEach(directory.GetFiles(path),Sub(x) file.Delete(x))" DisplayName="Invoke Code" sap2010:WorkflowViewState.IdRef="InvokeCode_2">
+                    <ui:InvokeCode.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="path">[SuccessFolder]</InArgument>
+                    </ui:InvokeCode.Arguments>
+                  </ui:InvokeCode>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="variable1" />
+                  </Sequence.Variables>
+                  <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_2" Path="[SuccessFolder]" />
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_21" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Success folder created @ &quot;+SuccessFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_22" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Success folder created @ &quot;+SuccessFolder]" />
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+          <Sequence DisplayName="Failure Folder creation" sap2010:WorkflowViewState.IdRef="Sequence_9">
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_11">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Object">[In_Config("Failure_Folder_Path")]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Object">[In_Config("Failure_Folder_Path").ToString.Trim+"\"+now.ToString("ddMMMyyyy_HHmm")]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[FailureFolder]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[In_Config("Failure_Folder_Path").ToString.Trim]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_5" Text="Main: Int: CreateFolderStructure: Project folders: Checking Failure Folder is available or not." />
+            <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Checking Failure Folder is available or not.&quot;]" />
+            <ui:PathExists DisplayName="Path Exists" Exists="[FailureFolderExists]" sap2010:WorkflowViewState.IdRef="PathExists_3" Path="[FailureFolder]" PathType="Folder" />
+            <If Condition="[FailureFolderExists]" DisplayName="Checking Failure Folder Exists or not" sap2010:WorkflowViewState.IdRef="If_3">
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_7">
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_6" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Failure folder already existed.@ &quot;+FailureFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Failure folder already existed.@ &quot;+FailureFolder]" />
+                  <ui:InvokeCode ContinueOnError="{x:Null}" Code="Array.ForEach(directory.GetFiles(path),Sub(x) file.Delete(x))" DisplayName="Invoke Code" sap2010:WorkflowViewState.IdRef="InvokeCode_3">
+                    <ui:InvokeCode.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="path">[FailureFolder]</InArgument>
+                    </ui:InvokeCode.Arguments>
+                  </ui:InvokeCode>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_8">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="variable1" />
+                  </Sequence.Variables>
+                  <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_3" Path="[FailureFolder]" />
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_22" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Failure folder already created.@ &quot;+FailureFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_23" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Failure folder already created.@ &quot;+FailureFolder]" />
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+          <Sequence DisplayName="Processing Folder Creation" sap2010:WorkflowViewState.IdRef="Sequence_15">
+            <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_9" Text="Main: Int: CreateFolderStructure: Project folders: Checking Processing Folder is available or not." />
+            <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Checking Processing Folder is available or not.&quot;]" />
+            <ui:PathExists DisplayName="Path Exists" Exists="[ProcessingFolderExists]" sap2010:WorkflowViewState.IdRef="PathExists_5" Path="[ProcessingFolder]" PathType="Folder" />
+            <If Condition="[ProcessingFolderExists]" DisplayName="Checking Processing Folder is exiting or not" sap2010:WorkflowViewState.IdRef="If_5">
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_13">
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_10" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Processing folder already existed.@ &quot;+ProcessingFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Processing folder already existed.@ &quot;+ProcessingFolder]" />
+                  <ui:InvokeCode ContinueOnError="{x:Null}" Code="Array.ForEach(directory.GetFiles(path),Sub(x) file.Delete(x))" DisplayName="Invoke Code" sap2010:WorkflowViewState.IdRef="InvokeCode_5">
+                    <ui:InvokeCode.Arguments>
+                      <InArgument x:TypeArguments="x:String" x:Key="path">[ProcessingFolder]</InArgument>
+                    </ui:InvokeCode.Arguments>
+                  </ui:InvokeCode>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_14">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="variable1" />
+                  </Sequence.Variables>
+                  <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_5" Path="[ProcessingFolder]" />
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_23" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Processing folder already created.@ &quot;+ProcessingFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_24" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Processing folder already created.@ &quot;+ProcessingFolder]" />
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+          <Sequence DisplayName="Traker Folder creation" sap2010:WorkflowViewState.IdRef="Sequence_18">
+            <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_11" Text="Main: Int: CreateFolderStructure: Project folders: Checking Traker Folder is available or not." />
+            <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Checking Traker Folder is available or not.&quot;]" />
+            <ui:PathExists DisplayName="Path Exists" Exists="[TrackerFolderExists]" sap2010:WorkflowViewState.IdRef="PathExists_6" Path="[TrackerFolder]" PathType="Folder" />
+            <If Condition="[TrackerFolderExists]" DisplayName="Checking Traker folder is exiting or not" sap2010:WorkflowViewState.IdRef="If_6">
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_16">
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_12" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Tracker folder already existed.@ &quot;+TrackerFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Tracker folder already existed.@ &quot;+TrackerFolder]" />
+                  <Assign sap2010:WorkflowViewState.IdRef="Assign_4">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[In_Config("Process_Tracker_File_Path")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">[TrackerFolder+"\Process Tracker_"+now.ToString("ddMMyyyy_HHmm")+".xlsx"]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[In_Config(&quot;Process_Tracker_File_Path&quot;).ToString.Trim]" DisplayName="Copy File" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="False" Path="[In_Config(&quot;Process_Tracker_Template_File_Path&quot;).ToString.Trim]" />
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_24" Text="Main: Int: CreateFolderStructure: Project folders: Get  a copy of Tracker template file" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_25" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Get  a copy of Tracker template file&quot;]" />
+                  <ui:ReadRange AddHeaders="True" DataTable="[Dt_ProcessTable]" DisplayName="Read Range" sap2010:WorkflowViewState.IdRef="ReadRange_1" Range="A1" SheetName="Ez Cash Tracking Sheet" WorkbookPath="[In_Config(&quot;Process_Tracker_File_Path&quot;).ToString.Trim]" />
+                  <ui:CommentOut DisplayName="Comment Out" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+                    <ui:CommentOut.Body>
+                      <Sequence DisplayName="Ignored Activities" sap2010:WorkflowViewState.IdRef="Sequence_31">
+                        <Assign sap2010:WorkflowViewState.IdRef="Assign_5">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="sd:DataTable">[Dt_ProcessTracker]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="sd:DataTable">[Dt_ProcessTable]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </Sequence>
+                    </ui:CommentOut.Body>
+                  </ui:CommentOut>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_17">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="variable1" />
+                  </Sequence.Variables>
+                  <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_6" Path="[TrackerFolder]" />
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_25" Text="[&quot;Main: Int: CreateFolderStructure: Project folders: Tracker folder already created.@ &quot;+TrackerFolder]" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_26" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Tracker folder already created.@ &quot;+TrackerFolder]" />
+                  <Assign sap2010:WorkflowViewState.IdRef="Assign_6">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[In_Config("Process_Tracker_File_Path")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">[TrackerFolder+"\Process Tracker_"+now.ToString("ddMMyyyy_HHmm")+".xlsx"]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[In_Config(&quot;Process_Tracker_File_Path&quot;).ToString.Trim]" DisplayName="Copy File" sap2010:WorkflowViewState.IdRef="CopyFile_2" Overwrite="False" Path="[In_Config(&quot;Process_Tracker_Template_File_Path&quot;).ToString.Trim]" />
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_26" Text="Main: Int: CreateFolderStructure: Project folders: Get  a copy of Tracker template file" />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_27" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Get  a copy of Tracker template file&quot;]" />
+                  <ui:ReadRange AddHeaders="True" DataTable="[Dt_ProcessTable]" DisplayName="Read Range" sap2010:WorkflowViewState.IdRef="ReadRange_2" Range="A1" SheetName="Ez Cash Tracking Sheet" WorkbookPath="[In_Config(&quot;Process_Tracker_File_Path&quot;).ToString.Trim]" />
+                  <ui:CommentOut DisplayName="Comment Out" sap2010:WorkflowViewState.IdRef="CommentOut_2">
+                    <ui:CommentOut.Body>
+                      <Sequence DisplayName="Ignored Activities" sap2010:WorkflowViewState.IdRef="Sequence_32">
+                        <Assign sap2010:WorkflowViewState.IdRef="Assign_7">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="sd:DataTable">[Dt_ProcessTracker]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="sd:DataTable">[Dt_ProcessTable]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                      </Sequence>
+                    </ui:CommentOut.Body>
+                  </ui:CommentOut>
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+          <ui:CommentOut DisplayName="Comment Out" sap2010:WorkflowViewState.IdRef="CommentOut_6">
+            <ui:CommentOut.Body>
+              <Sequence DisplayName="Ignored Activities" sap2010:WorkflowViewState.IdRef="Sequence_42">
+                <Sequence DisplayName="Shared Folder creation" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:Boolean" Name="SharedFolderExists" />
+                    <Variable x:TypeArguments="x:String" Default="[In_Config(&quot;Shared_Folder_Path&quot;).ToString.Trim]" Name="SharedFolder" />
+                  </Sequence.Variables>
+                  <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_13" Text="Main: Int: CreateFolderStructure: Project folders: Checking Shared Folder is available or not." />
+                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Checking Shared Folder is available or not.&quot;]" />
+                  <ui:PathExists DisplayName="Path Exists" Exists="[SharedFolderExists]" sap2010:WorkflowViewState.IdRef="PathExists_7" Path="[SharedFolder]" PathType="Folder" />
+                  <If Condition="[SharedFolderExists]" DisplayName="Checking Shared Folder is Exists or not" sap2010:WorkflowViewState.IdRef="If_7">
+                    <If.Then>
+                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_19">
+                        <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Info" Message="[&quot;Main: Int: CreateFolderStructure: Project folders: Shared folder already existed.@ &quot;+SharedFolder]" />
+                        <ui:InvokeCode ContinueOnError="{x:Null}" Code="Array.ForEach(directory.GetFiles(path),Sub(x) file.Delete(x))" DisplayName="Invoke Code" sap2010:WorkflowViewState.IdRef="InvokeCode_6">
+                          <ui:InvokeCode.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="path">[SharedFolder]</InArgument>
+                          </ui:InvokeCode.Arguments>
+                        </ui:InvokeCode>
+                      </Sequence>
+                    </If.Then>
+                    <If.Else>
+                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_20">
+                        <Sequence.Variables>
+                          <Variable x:TypeArguments="x:String" Name="variable1" />
+                        </Sequence.Variables>
+                        <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_7" Path="[SharedFolder]" />
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </Sequence>
+            </ui:CommentOut.Body>
+          </ui:CommentOut>
+          <ui:CommentOut DisplayName="Comment Out" sap2010:WorkflowViewState.IdRef="CommentOut_3">
+            <ui:CommentOut.Body>
+              <Sequence DisplayName="Ignored Activities" sap2010:WorkflowViewState.IdRef="Sequence_33">
+                <Assign sap2010:WorkflowViewState.IdRef="Assign_10">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[str_Out_SharedFolder]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">[SharedFolder]</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Sequence>
+            </ui:CommentOut.Body>
+          </ui:CommentOut>
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_29">
+              <ui:LogMessage DisplayName="Log App Initialization message" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Error" Message="[&quot;Error in Folder Creating&quot;]" />
+              <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_14" Text="Main: Int: CreateFolderStructure: Project folders: Error in Folder Creating" />
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RaiseExceptionAlert workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="eZ Cash Reconsilation_Code\RaiseExceptionAlert.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="LogMessage">["Application Initialization error " + exception.ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="FillePath">[LogFileName]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="ToAddress" />
+                  <InArgument x:TypeArguments="x:String" x:Key="CcAddress" />
+                  <InArgument x:TypeArguments="x:String" x:Key="Subject" />
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Comment_1" sap:VirtualizedContainerService.HintSize="418,113">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AppendLine_15" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_16" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="PathExists_8" sap:VirtualizedContainerService.HintSize="314,89" />
+      <sap2010:ViewStateData Id="AppendLine_16" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_17" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="InvokeCode_7" sap:VirtualizedContainerService.HintSize="314,164" />
+      <sap2010:ViewStateData Id="Sequence_36" sap:VirtualizedContainerService.HintSize="336,546">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateDirectory_8" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_19" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_20" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Sequence_37" sap:VirtualizedContainerService.HintSize="336,404">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_38" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="AppendLine_3" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="PathExists_2" sap:VirtualizedContainerService.HintSize="314,89" />
+      <sap2010:ViewStateData Id="AppendLine_4" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_4" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="InvokeCode_2" sap:VirtualizedContainerService.HintSize="314,164" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="336,546">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateDirectory_2" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_21" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_22" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="336,404">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_11" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="AppendLine_5" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_5" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="PathExists_3" sap:VirtualizedContainerService.HintSize="314,89" />
+      <sap2010:ViewStateData Id="AppendLine_6" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_6" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="InvokeCode_3" sap:VirtualizedContainerService.HintSize="314,164" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="336,546">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateDirectory_3" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_22" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_23" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="336,404">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AppendLine_9" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_9" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="PathExists_5" sap:VirtualizedContainerService.HintSize="314,89" />
+      <sap2010:ViewStateData Id="AppendLine_10" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_10" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="InvokeCode_5" sap:VirtualizedContainerService.HintSize="314,164" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="336,546">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateDirectory_5" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_23" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_24" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Sequence_14" sap:VirtualizedContainerService.HintSize="336,404">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_15" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AppendLine_11" sap:VirtualizedContainerService.HintSize="697,87" />
+      <sap2010:ViewStateData Id="LogMessage_11" sap:VirtualizedContainerService.HintSize="697,91" />
+      <sap2010:ViewStateData Id="PathExists_6" sap:VirtualizedContainerService.HintSize="697,89" />
+      <sap2010:ViewStateData Id="AppendLine_12" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_12" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="CopyFile_1" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_24" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_25" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="ReadRange_1" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_31" sap:VirtualizedContainerService.HintSize="264,184">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CommentOut_1" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="336,980">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateDirectory_6" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_25" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_26" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="CopyFile_2" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_26" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_27" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="ReadRange_2" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Assign_7" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_32" sap:VirtualizedContainerService.HintSize="264,184">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CommentOut_2" sap:VirtualizedContainerService.HintSize="314,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="336,1042">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="697,1190">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_18" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AppendLine_13" sap:VirtualizedContainerService.HintSize="583,87" />
+      <sap2010:ViewStateData Id="LogMessage_13" sap:VirtualizedContainerService.HintSize="583,91" />
+      <sap2010:ViewStateData Id="PathExists_7" sap:VirtualizedContainerService.HintSize="583,89" />
+      <sap2010:ViewStateData Id="LogMessage_14" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="InvokeCode_6" sap:VirtualizedContainerService.HintSize="314,164" />
+      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="336,419">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateDirectory_7" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="222,146">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="583,567">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_42" sap:VirtualizedContainerService.HintSize="627,175">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CommentOut_6" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_33" sap:VirtualizedContainerService.HintSize="264,184">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CommentOut_3" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_28" sap:VirtualizedContainerService.HintSize="222,721">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_15" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="AppendLine_14" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_29" sap:VirtualizedContainerService.HintSize="336,469">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="418,948">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_30" sap:VirtualizedContainerService.HintSize="440,1225">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CreateFolderStructure_1" sap:VirtualizedContainerService.HintSize="480,1305" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

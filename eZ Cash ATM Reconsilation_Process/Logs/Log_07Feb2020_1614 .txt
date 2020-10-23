@@ -1,0 +1,133 @@
+--------------------BOT Starts- eZ Cash Merchant Settelment Process-----------------
+
+Killing processes...
+Killing outlook processes
+Killing excel processes
+Killing firefox processes
+Main: Int: InitAllApplications: SettingupEnv: Opening applications...
+Main: Int: InitAllApplications: SettingupEnv: Checking Excel Application is installed or not.
+Main: Int: InitAllApplications: SettingupEnv:  Excel Application is installed
+Main: Int: InitAllApplications: SettingupEnv: Checking Outlook Application installed or not.
+Main: Int: InitAllApplications: SettingupEnv:  Outlook Application is installed
+Main: Int: InitAllApplications: SettingupEnv: Checking Chrome Application installed or not.
+Main: Int: InitAllApplications: SettingupEnv: Firefox Application is installed
+Main: Int: Project folders: Checking Input folder is available or not.
+Main: Int: Project folders: Input folder already existed.@ C:\Users\Thushani_09002\Documents\UiPath\ATM_Recon\eZ Cash ATM Reconsilation_Process\Input
+Main: Int: CreateFolderStructure: Project folders: Checking Success Folder is available or not.
+Main: Int: CreateFolderStructure: Project folders: Success folder created @ C:\Users\Thushani_09002\Documents\UiPath\ATM_Recon\eZ Cash ATM Reconsilation_Process\Output\Success\07Feb2020_1614
+Main: Int: CreateFolderStructure: Project folders: Checking Failure Folder is available or not.
+Main: Int: CreateFolderStructure: Project folders: Failure folder already created.@ C:\Users\Thushani_09002\Documents\UiPath\ATM_Recon\eZ Cash ATM Reconsilation_Process\Output\Failure\07Feb2020_1614
+Main: Int: CreateFolderStructure: Project folders: Checking Processing Folder is available or not.
+Main: Int: CreateFolderStructure: Project folders: Processing folder already existed.@ C:\Users\Thushani_09002\Documents\UiPath\ATM_Recon\eZ Cash ATM Reconsilation_Process\Processing
+Main: Int: CreateFolderStructure: Project folders: Checking Traker Folder is available or not.
+Main: Int: CreateFolderStructure: Project folders: Tracker folder already existed.@ C:\Users\Thushani_09002\Documents\UiPath\ATM_Recon\eZ Cash ATM Reconsilation_Process\Traker
+Main: Int: CreateFolderStructure: Project folders: Get  a copy of Tracker template file
+Main: GetTransactionData: CommercialOnilineWeb: Open Commercial Online banking Browser 
+Main: GetTransactionData: CommercialOnilineWeb: Type Login ID
+Main: GetTransactionData: CommercialOnilineWeb: Clicked Login Button
+Main: GetTransactionData: CommercialOnilineWeb: Type Password
+Main: GetTransactionData: CommercialOnilineWeb: Clicked Submit button
+Main: GetTransactionData: CommercialOnilineWeb: Navigate to the Account History
+Main: GetTransactionData: CommercialOnilineWeb: Clicked Ok button
+Main: GetTransactionData: CommercialOnilineWeb: Select Account Number
+Main: GetTransactionData: CommercialOnilineWeb: Enter From Date
+Main: GetTransactionData: CommercialOnilineWeb: Enter To Date
+Main: GetTransactionData: CommercialOnilineWeb: Clicked Submit button
+Main: GetTransactionData: CommercialOnilineWeb: Extract Data Table
+Main: GetTransactionData: CommercialOnilineWeb: Filtering the data Table
+Main: GetTransactionData: CommercialOnilineWeb: Sign out from the commercial Online web page
+Main: GetTransactionData: CommercialOnilineWeb: Clicked close button
+Main: GetTransactionData: CommercialOnilineWeb: Check wheather Template file Exists or not.
+Main: GetTransactionData: CommercialOnilineWeb: Update Rec sheet in Template file
+Main: GetTransactionData: CommercialOnilineWeb: Update the 'Rec' sheet count in Config file
+Main: GetTransactionData: BI_Portal: Open the bi portal
+Main: GetTransactionData: BI_Portal: Type the Username
+Main: GetTransactionData: BI_Portal: Type the Password
+Main: GetTransactionData: BI_Portal: Click Ok button
+Main: GetTransactionData: BI_Portal: Typed the from date
+Main: GetTransactionData: BI_Portal: Typed the to date
+Main: GetTransactionData: BI_Portal: Drop down clicked in States
+Main: GetTransactionData: BI_Portal: Drop down clicked in initiator
+Main: GetTransactionData: BI_Portal: Type BI initiator
+Main: GetTransactionData: BI_Portal: Drop down clicked in initiator
+Main: GetTransactionData: BI_Portal: Drop down clicked ATM withdrawal checkbox
+Main: GetTransactionData: BI_Portal: Click View Report
+Main: GetTransactionData: BI_Portal: Click Save As icon
+Main: GetTransactionData: BI_Portal: Clicked on  Excel in dropdown list 
+Main: GetTransactionData: BI_Portal: Clicked on  Save arrow in pop up
+Main: GetTransactionData: BI_Portal: Clicked on  Save as in drop down list
+Main: GetTransactionData: BI_Portal: Get The Excel File Name
+Main: GetTransactionData: BI_Portal: Type save location: C:\Users\Thushani_09002\Documents\UiPath\ATM_Recon\eZ Cash ATM Reconsilation_Process\Input\eZ Cash MWA Transactions - Initiator Filter0
+Main: GetTransactionData: BI_Portal: Clicked on Save button
+Main: GetTransactionData: BI_Portal: Clicked on Close button in browser
+Main: GetTransactionData: BI_Portal: Read the Downloaded excel
+Main: GetTransactionData: BI_Portal: Copy the Biportal excel from input folder to processing folder
+Main: GetTransactionData: BI_Portal: Close the web page
+Main: Process: Select all the excel sheet
+Main: Process: Send hot key 'Ctrl + C'
+Main: Process: Clicked create new sheet icon
+Main: Process: Select all the excel sheet
+Main: Process: Send hot key 'Ctrl + V'
+Main: Process: Clicked on value radio button
+Main: Process: Clicked on ok button
+Main: Process: Send hot key 'Ctrl + G'
+Main: Process:Type 'A2' on it
+Main: Process:Clicked on OK button
+Main: Process:Send hot key 'Ctrl + space'
+Main: Process: Send hot key 'Ctrl + 1'
+Main: Process: Select 'Number' in drop down list
+Main: Process: Type decimal number as 0
+Main: Process: Clicked on OK button
+Main: Process: Send hot key 'Ctrl + G'
+Main: Process: Type into C2 as reference
+Main: Process: Clicked OK button
+Main: Process: Send hot key 'Ctrl + space'
+Main: Process: Send hot key 'Ctrl + 1'
+Main: Process: Select Date from drop down list
+Main: Process: Select the type of Date from drop down list
+Main: Process: Excute down key 9 times
+Main: Process: Select Correct date type
+Main: Process: Clicked on Ok button
+Main: Process: Clicked on Data Tab
+Main: Process: Clicked on FIlter in Data Pane
+Main: Process: Send hot key 'Ctrl + g'
+Main: Process: Type C1 as the reference
+Main: Process: Clicked Ok button
+Main: Process: Clicked on Save button in excel ribbon
+Main: Process: Read sheet1
+Main: Process: Sort and get specific range of data according the date
+Main: Process: Write data table to the new sheet
+Main: Process: Send the hot key 'Ctrl + g'
+Main: Process: Type B2 as the reference
+Main: Process: CLicked on Ok button
+Main: Process: Send hot key 'Ctrl+ space'
+Main: Process: Send hot key 'Ctrl+ 1'
+Main: Process: Select date from drop down list'
+Main: Process: Select the type of Date from drop down list
+Main: Process: Execute down arow key 9 times
+Main: Process: Select the correct date type
+Main: Process: Clicked Ok button
+Main: Process: Read sheet2
+Main: Process: Send hot key 'Ctrl + s'
+Main: Process: Copy data to ezcash sheet'
+Main: Process: Get the summation of copied data
+Main: Process: Update the template file
+Main: Process: Update the template file
+Main: Process: Update the template file
+Main: Process: Update the template file
+Main: Process: read the difference value in template file
+Main: Process: Update the config file
+Main: Process: Commercial Secure File: Open Commercial secure web page
+Main: Process: Commercial Secure File: Type username
+Main: Process: Commercial Secure File: Type password
+Main: Process: Commercial Secure File: Clicked on login button
+Main: Process: Commercial Secure File: Clicked on secure files
+Main: Process: Commercial Secure File: Clicked on file name
+Main: Process: Commercial Secure File: Clicked on download button
+Main: Process: Commercial Secure File: Send hot key 'Ctrl + s'
+Main: Process: Commercial Secure File: Type the file path to save in C:\Users\Thushani_09002\Documents\UiPath\ATM_Recon\eZ Cash ATM Reconsilation_Process\Processing\200206.txt
+Main: Process: Commercial Secure File: Clicked on save button
+Main: Process: JiraTicket: Open the Dfix web page
+Main: Process: JiraTicket: Entered the Jira Username
+Main: Process: JiraTicket: Entered the Jira Password
+Main: Process: read the difference value in template file

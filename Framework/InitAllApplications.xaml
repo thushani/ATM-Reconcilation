@@ -1,0 +1,335 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Initialize_Applications"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Config" Type="InOutArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="LogFileName" Type="InOutArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>Initialization_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Management.Automation</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>System.Security</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Management.Automation</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>TimeSpan2</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Description: Open and initialize application as needed.&#xA;&#xA;Pre Condition: N/A&#xA;Post Condtion: Applications opened" DisplayName="Initialization Sequence" sap2010:WorkflowViewState.IdRef="Sequence_9">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;Excel_AppPath&quot;).ToString.Trim]" Name="ExcelAppFilePath" />
+      <Variable x:TypeArguments="x:Boolean" Name="ExcelAppExists" />
+      <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;Outlook_AppPath&quot;).ToString.Trim]" Name="OutlookAppFilePath" />
+      <Variable x:TypeArguments="x:Boolean" Name="OutlookAppExists" />
+      <Variable x:TypeArguments="x:String" Default="[in_Config(&quot;Firefox_AppPath&quot;).ToString.Trim]" Name="FirefoxPath" />
+      <Variable x:TypeArguments="x:Boolean" Name="FirefoxExists" />
+    </Sequence.Variables>
+    <ui:Comment DisplayName="eZ Cash Merchant Reconsilation Process" sap2010:WorkflowViewState.IdRef="Comment_1" Text="BOT initialization&#xA;&#xA;&#xA;&#xA;CODE is Implemented By:&#xA;THUSHANI KALAMULLAGE&#xA;&#xA;&#xA;" />
+    <ui:LogMessage DisplayName="Log App Initialization message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Opening applications...&quot;]" />
+    <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_1" Text="Main: Int: InitAllApplications: SettingupEnv: Opening applications..." />
+    <TryCatch DisplayName="SettingupEnv" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Try>
+        <Sequence DisplayName="SettingupEnv" sap2010:WorkflowViewState.IdRef="Sequence_16">
+          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Main: Int: InitAllApplications: SettingupEnv: Checking Excel Application installed or not.&quot;]" />
+          <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_2" Text="Main: Int: InitAllApplications: SettingupEnv: Checking Excel Application is installed or not." />
+          <ui:PathExists DisplayName="Path Exists" Exists="[ExcelAppExists]" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[ExcelAppFilePath]" PathType="File" />
+          <If Condition="[ExcelAppExists]" DisplayName="Checking Excel applcation is exits or not" sap2010:WorkflowViewState.IdRef="If_1">
+            <If.Then>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_10">
+                <ui:KillProcess ContinueOnError="{x:Null}" Process="{x:Null}" DisplayName="Kill Process" sap2010:WorkflowViewState.IdRef="KillProcess_1" ProcessName="EXCEL7" />
+                <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Main: Int: InitAllApplications: SettingupEnv:  Excel Application is installed&quot;]" />
+                <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_3" Text="Main: Int: InitAllApplications: SettingupEnv:  Excel Application is installed" />
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_11">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RaiseExceptionAlert workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="eZ Cash Reconsilation_Code\RaiseExceptionAlert.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="x:String" x:Key="LogMessage">["Excel Application is Not installed"+ExcelAppFilePath]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="FillePath">[LogFileName]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="ToAddress" />
+                    <InArgument x:TypeArguments="x:String" x:Key="CcAddress" />
+                    <InArgument x:TypeArguments="x:String" x:Key="Subject">eZ Cash ATM Reconciliation error</InArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+              </Sequence>
+            </If.Else>
+          </If>
+          <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_4" Text="Main: Int: InitAllApplications: SettingupEnv: Checking Outlook Application installed or not." />
+          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Main: Int: InitAllApplications: SettingupEnv: Checking Outlook Application installed or not.&quot;]" />
+          <ui:PathExists DisplayName="Path Exists" Exists="[OutlookAppExists]" sap2010:WorkflowViewState.IdRef="PathExists_2" Path="[OutlookAppFilePath]" PathType="File" />
+          <If Condition="[OutlookAppExists]" DisplayName="Checking Outlook applcation is exits or not" sap2010:WorkflowViewState.IdRef="If_2">
+            <If.Then>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_12">
+                <ui:KillProcess ContinueOnError="{x:Null}" Process="{x:Null}" DisplayName="Kill Process" sap2010:WorkflowViewState.IdRef="KillProcess_2" ProcessName="OUTLOOK" />
+                <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_5" Text="Main: Int: InitAllApplications: SettingupEnv:  Outlook Application is installed" />
+                <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Main: Int: InitAllApplications: SettingupEnv:  Outlook Application is installed&quot;+vbNewLine]" />
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_13">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RaiseExceptionAlert workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="eZ Cash Reconsilation_Code\RaiseExceptionAlert.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="x:String" x:Key="LogMessage">["Outlook Application is Not installed"+ OutlookAppFilePath]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="FillePath">[LogFileName]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="ToAddress" />
+                    <InArgument x:TypeArguments="x:String" x:Key="CcAddress" />
+                    <InArgument x:TypeArguments="x:String" x:Key="Subject">eZ Cash ATM Reconciliation error</InArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+              </Sequence>
+            </If.Else>
+          </If>
+          <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_9" Text="Main: Int: InitAllApplications: SettingupEnv: Checking Chrome Application installed or not." />
+          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Info" Message="[&quot;Main: Int: InitAllApplications: SettingupEnv: Checking Chrome Application installed or not.&quot;]" />
+          <ui:PathExists DisplayName="Path Exists" Exists="[FirefoxExists]" sap2010:WorkflowViewState.IdRef="PathExists_4" Path="[FirefoxPath]" PathType="File" />
+          <If Condition="[FirefoxExists]" DisplayName="Checking Chrome applcation is exits or not" sap2010:WorkflowViewState.IdRef="If_4">
+            <If.Then>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_18">
+                <ui:KillProcess ContinueOnError="{x:Null}" Process="{x:Null}" DisplayName="Kill Process" sap2010:WorkflowViewState.IdRef="KillProcess_3" ProcessName="firefox" />
+                <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_10" Text="Main: Int: InitAllApplications: SettingupEnv: Firefox Application is installed" />
+                <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Info" Message="[&quot;Main: Int: InitAllApplications: SettingupEnv:  Firefox Application is installed&quot;+vbNewLine]" />
+              </Sequence>
+            </If.Then>
+            <If.Else>
+              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_19">
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RaiseExceptionAlert workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" UnSafe="False" WorkflowFileName="eZ Cash ATM Reconsilation_Code\RaiseExceptionAlert.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="x:String" x:Key="LogMessage">["Firfox Application is Not installed"+ FirefoxPath]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="FillePath">[LogFileName]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="ToAddress" />
+                    <InArgument x:TypeArguments="x:String" x:Key="CcAddress" />
+                    <InArgument x:TypeArguments="x:String" x:Key="Subject">eZ Cash ATM Reconciliation error</InArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+              </Sequence>
+            </If.Else>
+          </If>
+        </Sequence>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_17">
+              <ui:LogMessage DisplayName="Log App Initialization message" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Error" Message="[&quot;Error in initialization Application&quot;]" />
+              <ui:AppendLine DisplayName="Append Line" FileName="[LogFileName]" sap2010:WorkflowViewState.IdRef="AppendLine_8" Text="Main: Int: InitAllApplications: SettingupEnv: Error in initialization Application" />
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke RaiseExceptionAlert workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="eZ Cash ATM Reconsilation_Code\RaiseExceptionAlert.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="LogMessage">["Application Initialization error " + exception.ToString]</InArgument>
+                  <InOutArgument x:TypeArguments="x:String" x:Key="FillePath" />
+                  <InArgument x:TypeArguments="x:String" x:Key="ToAddress" />
+                  <InArgument x:TypeArguments="x:String" x:Key="CcAddress" />
+                  <InArgument x:TypeArguments="x:String" x:Key="Subject" />
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <sads:DebugSymbol.Symbol>d1VDOlxVc2Vyc1xUaHVzaGFuaV8wOTAwMlxEb2N1bWVudHNcVWlQYXRoXEFUTV9SZWNvblxGcmFtZXdvcmtcSW5pdEFsbEFwcGxpY2F0aW9ucy54YW1sXUoDvgEOAgEBTDRMagIBBk40TmwCAQRQNFBsAgECUwVT4QECAXhUBVSvAQIBdlUFVcUBAgFyVgW8ARACAQhUhQFUrAECAXdVe1XCAQIBdVU3VUYCAXNYCaQBFAIBFKwBDbgBGAIBCVkLWeUBAgFwWgta4wECAWxbC1upAQIBZ1wLcRACAVNyC3LiAQIBT3MLc+cBAgFNdAt0rQECAUh1C4oBEAIBNIsBC4sB4QECATCMAQuMAeYBAgEujQELjQGjAQIBKY4BC6MBEAIBFa0BD60BxgECARKuAQ+uAdsBAgEOrwEPtwEnAgEKWXhZ4gECAXFagQFa4AECAW9aPVpMAgFtWztbTQIBaluCAVuWAQIBaFwZXCsCAVReD2IaAgFeZQ9vGgIBVnKBAXLfAQIBUnI9ckwCAVBzeHPkAQIBTnQ7dE8CAUt0hAF0mgECAUl1GXUtAgE1dw97GgIBP34PiAEaAgE3iwGBAYsB3gECATOLAT2LAUwCATGMAXiMAeMBAgEvjQE7jQFMAgEsjQGBAY0BkAECASqOARmOASoCARaQAQ+UARoCASCXAQ+hARoCARitAZABrQHDAQIBE64BhQGuAdgBAgERrgFBrgFQAgEPsQFNsQGHAQIBDK8BygGvAYMCAgELXxFfsQECAWVgEWDeAQIBY2ERYdkBAgFfZhFuKQIBV3gReLIBAgFGeRF52wECAUJ6EXrqAQIBQH8RhwEpAgE4kQERkQGyAQIBJ5IBEZIB2wECASOTARGTAesBAgEhmAERoAEpAgEZX6YBX64BAgFmYH5g2wECAWRhhwFh1gECAWJhQ2FSAgFgbExsbAIBXWhPaIYBAgFbZswBZoECAgFaaU5pWwIBWHimAXivAQIBR3mHAXnYAQIBRXlDeVICAUN6fnrnAQIBQYUBTIUBbAIBPoEBT4EBiwECATx/zAF/gQICATuCAU6CAVsCATmRAaYBkQGvAQIBKJIBiAGSAdgBAgEmkgFDkgFSAgEkkwF/kwHoAQIBIp4BTJ4BbAIBH5oBT5oBgwECAR2YAcwBmAGFAgIBHJsBTpsBWwIBGg==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Comment_1" sap:VirtualizedContainerService.HintSize="737,113">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="737,91" />
+      <sap2010:ViewStateData Id="AppendLine_1" sap:VirtualizedContainerService.HintSize="737,87" />
+      <sap2010:ViewStateData Id="LogMessage_2" sap:VirtualizedContainerService.HintSize="697,91" />
+      <sap2010:ViewStateData Id="AppendLine_2" sap:VirtualizedContainerService.HintSize="697,87" />
+      <sap2010:ViewStateData Id="PathExists_1" sap:VirtualizedContainerService.HintSize="697,89" />
+      <sap2010:ViewStateData Id="KillProcess_1" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="AppendLine_3" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="336,404">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_1" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="336,211">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="697,552">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AppendLine_4" sap:VirtualizedContainerService.HintSize="697,87" />
+      <sap2010:ViewStateData Id="LogMessage_4" sap:VirtualizedContainerService.HintSize="697,91" />
+      <sap2010:ViewStateData Id="PathExists_2" sap:VirtualizedContainerService.HintSize="697,89" />
+      <sap2010:ViewStateData Id="KillProcess_2" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_5" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_5" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="336,404">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="336,211">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="697,552">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AppendLine_9" sap:VirtualizedContainerService.HintSize="697,87" />
+      <sap2010:ViewStateData Id="LogMessage_9" sap:VirtualizedContainerService.HintSize="697,91" />
+      <sap2010:ViewStateData Id="PathExists_4" sap:VirtualizedContainerService.HintSize="697,89" />
+      <sap2010:ViewStateData Id="KillProcess_3" sap:VirtualizedContainerService.HintSize="314,22" />
+      <sap2010:ViewStateData Id="AppendLine_10" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="LogMessage_10" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Sequence_18" sap:VirtualizedContainerService.HintSize="336,404">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_5" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="336,211">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="697,552">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="719,3021">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_8" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="AppendLine_8" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_4" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="336,469">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="723,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="737,3248">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="759,3855">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Initialization_1" sap:VirtualizedContainerService.HintSize="799,3935" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

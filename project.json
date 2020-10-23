@@ -1,0 +1,29 @@
+{
+  "name": "ATM_Recon",
+  "description": "Robotic Enterprise Framework",
+  "main": "Main.xaml",
+  "dependencies": {
+    "UiPath.UIAutomation.Activities": "[18.4.4]",
+    "UiPath.System.Activities": "[18.4.2]",
+    "UiPath.Mail.Activities": "[1.3.0]",
+    "UiPath.Credentials.Activities": "[1.1.6479.13204]",
+    "UiPath.Excel.Activities": "[2.6.3]",
+    "ConvertUtilityExcelToDictionary": "[1.0.0]",
+    "Microsoft.Activities.Extensions": "[2.0.6.9]"
+  },
+  "schemaVersion": "3.2",
+  "studioVersion": "18.4.4.0",
+  "projectVersion": "1.0.0.0",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ]
+  },
+  "projectType": "Workflow",
+  "libraryOptions": {
+    "includeOriginalXaml": false,
+    "privateWorkflows": []
+  }
+}
